@@ -1,0 +1,43 @@
+name: Gokko SDK
+
+on:
+  push:
+    branches:
+    tags:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.16.6'
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: CodeClimate before build
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+      - name: Run Tests
+        env:
+          GCP_PROJECT_ID: agekkoå
+          SERVICE_NAME: gokko-sdk
+        run: make citest
+
+      - name: CodeClimate after build
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: ./cc-test-reporter after-build -t coverage.py
