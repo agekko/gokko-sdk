@@ -16,7 +16,7 @@ func Test_SecretManager_NewSecretGetter_GetKey(t *testing.T) {
 }
 
 func TestSecretManager_NewSecretGetter_GetClientAndContext(t *testing.T) {
-	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "./../gekko.json")
+	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "./gekko.json")
 	defer os.Unsetenv("GOOGLE_APPLICATION_CREDENTIALS")
 
 	secretGetter := gokko.SecretManager_NewSecretGetter("MYSECRET")

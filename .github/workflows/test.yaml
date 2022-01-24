@@ -23,8 +23,7 @@ jobs:
 
       - name: Prepare GCP Credentials
         run: |
-          echo ${{ secrets.GCP_CREDENTIALS }} >> ./../gekko.json
-          ls -la ./../gekko.json
+          echo "${{ secrets.GCP_CREDENTIALS }}" >> ./gekko.json
 
       - name: CodeClimate before build
         run: |

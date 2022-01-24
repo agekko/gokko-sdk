@@ -1,5 +1,6 @@
 # App files and folders
 coverage
+gekko.json
 
 # OS and IDE files and folders
 .idea
