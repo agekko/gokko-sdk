@@ -21,6 +21,10 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
+      - name: Prepare GCP Credentials
+        run: |
+          echo "${{ secrets.GCP_CREDENTIALS }}" >> ./../gekko.json
+
       - name: CodeClimate before build
         run: |
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
