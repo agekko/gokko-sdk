@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	gokko "agekko/gokko-sdk/google"
+	gokko "agekko/gokko-sdk"
 )
 
 func Test_Project_GetProjectId(t *testing.T) {
