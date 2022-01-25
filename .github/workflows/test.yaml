@@ -40,4 +40,4 @@ jobs:
       - name: CodeClimate after build
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: ./cc-test-reporter after-build -t gocov -p agekko/gokko-sdk --exit-code 0
+        run: ./cc-test-reporter after-build -t gocov -p gokko --exit-code 0
