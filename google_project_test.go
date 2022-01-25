@@ -6,11 +6,14 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	gokko "agekko/gokko-sdk"
+	"gokko"
 )
 
 func Test_Project_GetProjectId(t *testing.T) {
+	t.Parallel()
+
 	os.Setenv("GCP_PROJECT_ID", "agekko")
+	defer os.Unsetenv("GCP_PROJECT_ID")
 
 	assert.Equal(
 		t,

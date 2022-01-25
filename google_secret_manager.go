@@ -5,13 +5,27 @@ import (
 	"fmt"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	gax "github.com/googleapis/gax-go/v2"
 	log "github.com/sirupsen/logrus"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
 )
 
+type GoogleSecretManagerClientInterface interface {
+	Close() error
+
+	AccessSecretVersion(
+		context.Context,
+		*secretmanagerpb.AccessSecretVersionRequest,
+		...gax.CallOption,
+	) (
+		*secretmanagerpb.AccessSecretVersionResponse,
+		error,
+	)
+}
+
 type SecretGetterInterface interface {
 	GetKey() string
-	GetClientAndContext() (*secretmanager.Client, context.Context)
+	GetClientAndContext() (GoogleSecretManagerClientInterface, context.Context)
 }
 
 type SecretGetter struct {
@@ -22,7 +36,7 @@ func (sg *SecretGetter) GetKey() string {
 	return sg.Key
 }
 
-func (sg *SecretGetter) GetClientAndContext() (*secretmanager.Client, context.Context) {
+func (sg *SecretGetter) GetClientAndContext() (GoogleSecretManagerClientInterface, context.Context) {
 	return getSecretManagerClientAndContext()
 }
 
@@ -56,7 +70,10 @@ func SecretManager_GetSecret(
 	return result.Payload.String()
 }
 
-func getSecretManagerClientAndContext() (*secretmanager.Client, context.Context) {
+func getSecretManagerClientAndContext() (
+	GoogleSecretManagerClientInterface,
+	context.Context,
+) {
 	ctx := context.Background()
 	client, err := secretmanager.NewClient(ctx)
 	if err != nil {

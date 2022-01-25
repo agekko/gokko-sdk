@@ -1,38 +1,44 @@
 package gokko_test
 
 import (
-	"os"
+	"context"
+	"fmt"
 	"testing"
 
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 
-	"agekko/gokko-sdk"
+	"gokko"
+	gokko_mock "gokko/mocks"
 )
 
 func Test_SecretManager_NewSecretGetter_GetKey(t *testing.T) {
+	t.Parallel()
+
 	secretGetter := gokko.SecretManager_NewSecretGetter("MYSECRET")
 
 	assert.Equal(t, "MYSECRET", secretGetter.GetKey())
 }
 
-func TestSecretManager_NewSecretGetter_GetClientAndContext(t *testing.T) {
-	os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "./gekko.json")
-	defer os.Unsetenv("GOOGLE_APPLICATION_CREDENTIALS")
+func TestSecretManager_GetSecret(t *testing.T) {
+	t.Parallel()
 
-	secretGetter := gokko.SecretManager_NewSecretGetter("MYSECRET")
-	client, ctx := secretGetter.GetClientAndContext()
-	defer client.Close()
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
 
-	assert.NotNil(t, client)
-	assert.NotNil(t, ctx)
-}
+	m := gokko_mock.NewMockSecretGetterInterface(ctrl)
 
-func TestSecretManager_NewSecretGetter_GetClientAndContext_ErrorIfInvalidCredentials(
-	t *testing.T,
-) {
-	secretGetter := gokko.SecretManager_NewSecretGetter("MYSECRET")
-	client, ctx := secretGetter.GetClientAndContext()
+	m.EXPECT().GetKey().Return("MYSECRET")
 
-	assert.Nil(t, client)
-	assert.Nil(t, ctx)
+	secretExpected := "SECRET_EXPECTED"
+	m.EXPECT().
+		GetClientAndContext().
+		Return(
+			gokko_mock.NewSecretManagerClient(secretExpected),
+			context.Background(),
+		)
+
+	secretReceived := gokko.SecretManager_GetSecret(m)
+
+	assert.Equal(t, fmt.Sprintf("data:\"%s\"", secretExpected), secretReceived)
 }
