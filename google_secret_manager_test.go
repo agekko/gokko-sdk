@@ -2,7 +2,6 @@ package gokko_test
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -40,5 +39,5 @@ func TestSecretManager_GetSecret(t *testing.T) {
 
 	secretReceived := gokko.SecretManager_GetSecret(m)
 
-	assert.Equal(t, fmt.Sprintf("data:\"%s\"", secretExpected), secretReceived)
+	assert.Equal(t, "SECRET_EXPECTED", secretReceived)
 }

@@ -67,7 +67,7 @@ func SecretManager_GetSecret(
 		return ""
 	}
 
-	return result.Payload.String()
+	return string(result.Payload.Data)
 }
 
 func getSecretManagerClientAndContext() (
