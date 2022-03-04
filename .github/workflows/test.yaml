@@ -8,8 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -25,19 +24,17 @@ jobs:
         run: |
           echo "${{ secrets.GCP_CREDENTIALS }}" >> ./gekko.json
 
-      - name: CodeClimate before build
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-
       - name: Run Tests
         env:
           GCP_PROJECT_ID: agekkoå
           SERVICE_NAME: gokko-sdk
         run: make citest
 
-      - name: CodeClimate after build
+      - name: Send coverage to CodeClimate
+        uses: paambaati/codeclimate-action@v3.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: ./cc-test-reporter after-build -t gocov -p gokko --exit-code 0
+        with:
+          coverageLocations: |
+            ${{ github.workspace }}/coverage/.coverage:gocov
+          prefix: github.com/agekko/gokko-sdk

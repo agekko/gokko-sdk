@@ -8,8 +8,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/agekko/gokko"
-	gokkomock "github.com/agekko/gokko/mocks"
+	"github.com/agekko/gokko-sdk"
+	gokkomock "github.com/agekko/gokko-sdk/mocks"
 )
 
 func Test_SecretManager_NewSecretGetter_GetKey(t *testing.T) {

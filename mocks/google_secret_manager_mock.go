@@ -6,12 +6,13 @@ package gokko_mock
 
 import (
 	context "context"
-    "github.com/agekko/gokko"
     reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
     gax "github.com/googleapis/gax-go/v2"
 	secretmanagerpb "google.golang.org/genproto/googleapis/cloud/secretmanager/v1"
+
+    gokko "github.com/agekko/gokko-sdk"
 )
 
 // MockSecretGetterInterface is a mock of SecretGetterInterface interface.
