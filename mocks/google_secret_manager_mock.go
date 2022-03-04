@@ -6,8 +6,8 @@ package gokko_mock
 
 import (
 	context "context"
-	"gokko"
-	reflect "reflect"
+    "github.com/agekko/gokko"
+    reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
     gax "github.com/googleapis/gax-go/v2"

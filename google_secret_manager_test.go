@@ -8,8 +8,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 
-	"gokko"
-	gokko_mock "gokko/mocks"
+	"github.com/agekko/gokko"
+	gokkomock "github.com/agekko/gokko/mocks"
 )
 
 func Test_SecretManager_NewSecretGetter_GetKey(t *testing.T) {
@@ -26,7 +26,7 @@ func TestSecretManager_GetSecret(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := gokko_mock.NewMockSecretGetterInterface(ctrl)
+	m := gokkomock.NewMockSecretGetterInterface(ctrl)
 
 	m.EXPECT().GetKey().Return("MYSECRET")
 
@@ -34,7 +34,7 @@ func TestSecretManager_GetSecret(t *testing.T) {
 	m.EXPECT().
 		GetClientAndContext().
 		Return(
-			gokko_mock.NewSecretManagerClient(secretExpected),
+			gokkomock.NewSecretManagerClient(secretExpected),
 			context.Background(),
 		)
 

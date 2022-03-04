@@ -1,4 +1,4 @@
-module gokko
+module github.com/agekko/gokko
 
 go 1.16
 
