@@ -29,7 +29,7 @@ func (storageFile *StorageFile) GetFileContentDisposition() string {
 	return storageFile.FileContentDisposition
 }
 
-func Storage_NewStorage(
+func Storage_NewStorageFile(
 	bucketName string,
 	fileName string,
 	fileContent string,
