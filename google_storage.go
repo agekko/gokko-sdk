@@ -7,10 +7,10 @@ import (
 )
 
 type StorageFile struct {
-	BucketName             string
-	FileName               string
-	FileContent            string
-	FileContentDisposition string
+	BucketName  string
+	FileName    string
+	FileContent string
+	ContentType string
 }
 
 func (storageFile *StorageFile) GetBucketName() string {
@@ -25,21 +25,21 @@ func (storageFile *StorageFile) GetFileContent() string {
 	return storageFile.FileContent
 }
 
-func (storageFile *StorageFile) GetFileContentDisposition() string {
-	return storageFile.FileContentDisposition
+func (storageFile *StorageFile) GetContentType() string {
+	return storageFile.ContentType
 }
 
 func Storage_NewStorageFile(
 	bucketName string,
 	fileName string,
 	fileContent string,
-	fileContentDisposition string,
+	contentType string,
 ) StorageFile {
 	return StorageFile{
-		BucketName:             bucketName,
-		FileName:               fileName,
-		FileContent:            fileContent,
-		FileContentDisposition: fileContentDisposition,
+		BucketName:  bucketName,
+		FileName:    fileName,
+		FileContent: fileContent,
+		ContentType: contentType,
 	}
 }
 
@@ -49,7 +49,7 @@ func Storage_Write(storage StorageFile) error {
 	writer := client.Bucket(storage.GetBucketName()).
 		Object(storage.GetFileName()).
 		NewWriter(ctx)
-	writer.ContentType = "text/plain"
+	writer.ContentType = storage.GetContentType()
 
 	_, err := writer.Write([]byte(storage.GetFileContent()))
 	if err != nil {
