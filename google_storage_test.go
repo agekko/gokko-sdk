@@ -11,17 +11,18 @@ import (
 func Test_Storage_NewStorage(t *testing.T) {
 	t.Parallel()
 
-	storage := gokko.Storage_NewStorage("BUCKET", "FILE", "CONTENT")
+	storage := gokko.Storage_NewStorage("BUCKET", "FILE", "CONTENT", "CONTENT/DISPOSITION")
 
-	assert.Equal(t, "BUCKET", storage.GetBucket())
+	assert.Equal(t, "BUCKET", storage.GetBucketName())
 	assert.Equal(t, "FILE", storage.GetFileName())
 	assert.Equal(t, "CONTENT", storage.GetFileContent())
+	assert.Equal(t, "CONTENT/DISPOSITION", storage.GetFileContentDisposition())
 }
 
 func Test_Storage_Write(t *testing.T) {
 	godotenv.Load()
 
-	storage := gokko.Storage_NewStorage("BUCKET", "FILE", "CONTENT")
+	storage := gokko.Storage_NewStorage("BUCKET", "FILE", "CONTENT", "CONTENT/DISPOSITION")
 
 	err := gokko.Storage_Write(storage)
 

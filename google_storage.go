@@ -6,38 +6,47 @@ import (
 	"cloud.google.com/go/storage"
 )
 
-type Storage struct {
-	Key         string
-	FileName    string
-	FileContent string
+type StorageFile struct {
+	BucketName             string
+	FileName               string
+	FileContent            string
+	FileContentDisposition string
 }
 
-func (sw *Storage) GetBucket() string {
-	return sw.Key
+func (storageFile *StorageFile) GetBucketName() string {
+	return storageFile.BucketName
 }
 
-func (sw *Storage) GetFileName() string {
-	return sw.FileName
+func (storageFile *StorageFile) GetFileName() string {
+	return storageFile.FileName
 }
 
-func (sw *Storage) GetFileContent() string {
-	return sw.FileContent
+func (storageFile *StorageFile) GetFileContent() string {
+	return storageFile.FileContent
+}
+
+func (storageFile *StorageFile) GetFileContentDisposition() string {
+	return storageFile.FileContentDisposition
 }
 
 func Storage_NewStorage(
-	key string, fileName string, fileContent string,
-) Storage {
-	return Storage{
-		Key:         key,
-		FileName:    fileName,
-		FileContent: fileContent,
+	bucketName string,
+	fileName string,
+	fileContent string,
+	fileContentDisposition string,
+) StorageFile {
+	return StorageFile{
+		BucketName:             bucketName,
+		FileName:               fileName,
+		FileContent:            fileContent,
+		FileContentDisposition: fileContentDisposition,
 	}
 }
 
-func Storage_Write(storage Storage) error {
+func Storage_Write(storage StorageFile) error {
 	client, ctx := getStorageClientAndContext()
 
-	writer := client.Bucket(storage.GetBucket()).
+	writer := client.Bucket(storage.GetBucketName()).
 		Object(storage.GetFileName()).
 		NewWriter(ctx)
 	writer.ContentType = "text/plain"
